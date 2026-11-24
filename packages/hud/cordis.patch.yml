@@ -1,0 +1,5 @@
+# dsh-plugin-hud bundle layer: inserts the plugin entry into the profile tree.
+# Client-only: the host half is a no-op, the browser half paints the HUD.
+- insert:
+    - id: dsh-plugin-hud
+      name: dsh-plugin-hud

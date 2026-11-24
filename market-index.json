@@ -1,0 +1,62 @@
+{
+  "format": 1,
+  "title": {
+    "zh": "科幻 HUD 与余额监控 · DSH 插件",
+    "en": "Sci-fi HUD & Balance for DSH"
+  },
+  "description": {
+    "zh": "两个独立插件：整窗科幻状态光效，以及侧栏余额水位。",
+    "en": "Two standalone DSH plugins: sci-fi status effects and a balance monitor."
+  },
+  "metadata": {},
+  "plugins": [
+    {
+      "name": "dsh-plugin-hud",
+      "title": { "zh": "科幻 HUD · 状态光效", "en": "Sci-fi HUD" },
+      "description": {
+        "zh": "整窗数据流背景；会话行按思考/输出自动亮起光环与进度条，支持多会话并行。",
+        "en": "Animated backdrop; each session row lights up with rings and a progress bar."
+      },
+      "author": "em-chester",
+      "homepage": "https://github.com/em-chester/dsh-plugin-hud",
+      "repository": { "type": "git", "url": "https://github.com/em-chester/dsh-plugin-hud" },
+      "metadata": {},
+      "versions": [
+        {
+          "version": "0.2.0",
+          "publishTimestamp": 1795572000,
+          "source": {
+            "type": "git",
+            "url": "https://github.com/em-chester/dsh-plugin-hud",
+            "commit": "46cc10caf2276f621be1e2342e0bcc333becb66a"
+          },
+          "engines": { "dsh": ">=1.0.0" }
+        }
+      ]
+    },
+    {
+      "name": "dsh-plugin-balance",
+      "title": { "zh": "余额监控 · 水位条", "en": "Balance Monitor" },
+      "description": {
+        "zh": "侧栏余额入口：实时余额、水位条、今日/本月消耗、低余额告警。",
+        "en": "Sidebar balance entry with a level bar, spend tracking and low-balance alerts."
+      },
+      "author": "em-chester",
+      "homepage": "https://github.com/em-chester/dsh-plugin-balance",
+      "repository": { "type": "git", "url": "https://github.com/em-chester/dsh-plugin-balance" },
+      "metadata": {},
+      "versions": [
+        {
+          "version": "0.1.0",
+          "publishTimestamp": 1795572000,
+          "source": {
+            "type": "git",
+            "url": "https://github.com/em-chester/dsh-plugin-balance",
+            "commit": "42ec076d91de92d3ca43b6e4deda1bcc642567e5"
+          },
+          "engines": { "dsh": ">=1.0.0" }
+        }
+      ]
+    }
+  ]
+}

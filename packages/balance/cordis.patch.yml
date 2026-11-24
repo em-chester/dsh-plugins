@@ -1,0 +1,5 @@
+# dsh-plugin-balance bundle layer: inserts the plugin entry into the profile tree.
+# Client-only: the host half is a no-op, the browser half fills sidebar.panellist + main.
+- insert:
+    - id: dsh-plugin-balance
+      name: dsh-plugin-balance

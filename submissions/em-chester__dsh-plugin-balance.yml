@@ -1,0 +1,6 @@
+url: https://github.com/em-chester/dsh-plugin-balance
+name: em-chester/dsh-plugin-balance
+category: usage
+description:
+  en: Adds a sidebar balance entry with a live level bar, gift/top-up split, today and month spend, low-balance warning, and a one-click top-up link.
+  zh: 侧栏余额入口：实时余额与水位条、赠送/充值拆分、今日与本月消耗、低余额告警，以及一键去充值。
