@@ -690,6 +690,13 @@ window.__ModuleLoader__.load({
 		// done / fade 是终态：任何驱动都不得把它改回进行中，否则进度会回退
 		function isTerminal(fx) { return fx.phase === "done" || fx.phase === "fade" || fx.phase === "dead"; }
 
+		// 收尾墓碑：某会话刚播完补满/扫光，短时间内不允许任何驱动重新开一轮
+		const tomb = new Map();
+		function tombstoned(key) {
+			const t = tomb.get(key);
+			return !!t && Date.now() - t < 20000;
+		}
+
 		// 结束一轮时把本地回合状态也归位，否则后续打字会被判成"仍在输出"
 		function markFinished(key) {
 			if (!key) return;
@@ -707,10 +714,12 @@ window.__ModuleLoader__.load({
 			}
 			const rect = row.getBoundingClientRect();
 			const phase = fx.phase;
-				if (fx.lastPhase !== phase) {
-					fx.lastPhase = phase;
+			if (fx.lastPhase !== phase) {
+				fx.lastPhase = phase;
 				if (phase === "stream" || phase === "done") rowSweep(key, rect, fx);
-				}
+				// 进入收尾态时留一个墓碑：元素销毁后驱动不得立刻重建，否则补满+扫光会反复重播
+				if (phase === "done") tomb.set(key, now);
+			}
 			const pos = "left:" + rect.left + "px;top:" + rect.top + "px;" +
 				"width:" + rect.width + "px;height:" + rect.height + "px;";
 			const isThink = phase === "think";
@@ -781,6 +790,7 @@ window.__ModuleLoader__.load({
 
 				if (st === "running" || st === "pending") {
 				if (fx && isTerminal(fx)) continue;   // 终态不再复活
+					if (tombstoned(key)) continue;      // 刚播完收尾，别立刻重来
 					const f = fx || fxFor(key);
 					if (f.phase !== "think" && f.phase !== "stream") { f.startAt = now; f.doneAt = 0; }
 					f.phase = (now - f.startAt < 3000) ? "think" : "stream";
@@ -802,6 +812,7 @@ window.__ModuleLoader__.load({
 				if (running) {
 				const ex = sessionFx.get(key);
 				if (ex && isTerminal(ex)) return;   // 终态不再复活
+					if (tombstoned(key)) return;        // 刚播完收尾，别立刻重来
 					const fx = fxFor(key);
 					if (fx.phase !== "think" && fx.phase !== "stream") {
 						fx.startAt = now;
@@ -872,7 +883,7 @@ window.__ModuleLoader__.load({
 		}
 		let statusKeysSample = "";      // 状态对象的字段名采样
 		let lastDiag = "";
-		const HUD_BUILD = "1125-0410";
+		const HUD_BUILD = "1125-0420";
 		let fxDiag = "init";
 
 		// 当前会话：本地状态机 → 直接写它自己的 fx（不等官方 running）
@@ -884,6 +895,7 @@ window.__ModuleLoader__.load({
 				if (next === "think" || next === "stream" || next === "done" || next === "idle") {
 					const ex = sessionFx.get(key);
 					if (ex && isTerminal(ex)) return;   // 终态不再复活
+						if (tombstoned(key)) return;        // 刚播完收尾，别立刻重来
 				}
 					const fx = fxFor(key);
 					if (fx.phase !== "think" && fx.phase !== "stream") {
@@ -1042,6 +1054,7 @@ window.__ModuleLoader__.load({
 				powerLevel = 0.05;
 				turnSeed = Math.random() * Math.PI * 2;
 				turnSid = captureSid();
+			if (turnSid) tomb.delete(turnSid);
 			// 新一轮开始：清掉上一轮残留的终态元素，避免被守卫挡住
 			if (turnSid && sessionFx.has(turnSid)) {
 				const oldFx = sessionFx.get(turnSid);

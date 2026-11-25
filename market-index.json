@@ -28,7 +28,7 @@
           "source": {
             "type": "git",
             "url": "https://github.com/em-chester/dsh-plugin-hud",
-            "commit": "46cc10caf2276f621be1e2342e0bcc333becb66a"
+            "commit": "f8998fae3e5f012da978c1b86b905c4ba4d6920f"
           },
           "engines": { "dsh": ">=1.0.0" }
         }
